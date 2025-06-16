@@ -6,7 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: yourdomain.com
+    - host: product.local
       http:
         paths:
           - path: /product
