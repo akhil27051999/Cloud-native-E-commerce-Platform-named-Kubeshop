@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: product-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: yourdomain.com
+      http:
+        paths:
+          - path: /product
+            pathType: Prefix
+            backend:
+              service:
+                name: product
+                port:
+                  number: 80
+
