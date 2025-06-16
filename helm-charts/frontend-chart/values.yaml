@@ -1,0 +1,20 @@
+replicaCount: 2
+
+image:
+  repository: akhilthyadi/kube-frontend
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: true
+  path: /
+
+config:
+  API_GATEWAY_URL: "http://api.kube-shop.local"
+
+resources: {}
+

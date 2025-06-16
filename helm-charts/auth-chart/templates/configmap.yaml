@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-config
+data:
+  JWT_SECRET: {{ .Values.config.JWT_SECRET | quote }}
+

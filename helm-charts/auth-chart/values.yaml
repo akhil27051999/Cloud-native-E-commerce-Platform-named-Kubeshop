@@ -1,0 +1,20 @@
+replicaCount: 2
+
+image:
+  repository: akhilthyadi/kube-auth
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 5000
+
+ingress:
+  enabled: true
+  path: /auth
+
+config:
+  JWT_SECRET: mysecret
+
+resources: {}
+

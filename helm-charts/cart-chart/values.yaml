@@ -1,0 +1,20 @@
+replicaCount: 2
+
+image:
+  repository: akhilthyadi/kube-cart
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 5001
+
+ingress:
+  enabled: true
+  path: /cart
+
+config:
+  CART_CACHE_TTL: "300"
+
+resources: {}
+

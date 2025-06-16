@@ -1,0 +1,20 @@
+replicaCount: 2
+
+image:
+  repository: akhilthyadi/kube-payments
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 7000
+
+ingress:
+  enabled: true
+  path: /payments
+
+config:
+  CURRENCY: "INR"
+
+resources: {}
+

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cart-config
+data:
+  CART_CACHE_TTL: {{ .Values.config.CART_CACHE_TTL | quote }}
+

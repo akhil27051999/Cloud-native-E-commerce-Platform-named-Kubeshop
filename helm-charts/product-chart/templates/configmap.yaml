@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: product-config
+data:
+  PRODUCT_ENV: {{ .Values.config.PRODUCT_ENV | quote }}
+

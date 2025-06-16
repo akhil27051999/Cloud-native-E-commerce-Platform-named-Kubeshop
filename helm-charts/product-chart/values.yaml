@@ -1,0 +1,20 @@
+replicaCount: 2
+
+image:
+  repository: akhilthyadi/kube-product
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  path: /product
+
+config:
+  PRODUCT_ENV: "production"
+
+resources: {}
+
