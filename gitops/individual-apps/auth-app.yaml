@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: auth-app
+  namespace: argocd
+spec:
+  destination:
+    namespace: auth
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/akhil27051999/Cloud-native-E-commerce-Platform-named-kubeshop.git
+    targetRevision: HEAD
+    path: k8s-manifests/overlays/dev
+    kustomize:
+      namePrefix: auth-
+      patches:
+        - path: patches/auth-replica-patch.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
