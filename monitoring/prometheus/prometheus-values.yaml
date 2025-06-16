@@ -1,0 +1,23 @@
+alertmanager:
+  enabled: true
+
+server:
+  global:
+    scrape_interval: 15s
+  persistentVolume:
+    enabled: true
+    size: 8Gi
+  resources:
+    requests:
+      memory: "400Mi"
+      cpu: "200m"
+    limits:
+      memory: "800Mi"
+      cpu: "400m"
+
+nodeExporter:
+  enabled: true
+
+kubeStateMetrics:
+  enabled: true
+

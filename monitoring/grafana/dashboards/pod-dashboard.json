@@ -1,0 +1,16 @@
+{
+  "title": "Pod Metrics",
+  "panels": [
+    {
+      "title": "Pod CPU Usage",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(container_cpu_usage_seconds_total{image!=''}[5m])",
+          "legendFormat": "{{ pod }}"
+        }
+      ]
+    }
+  ]
+}
+

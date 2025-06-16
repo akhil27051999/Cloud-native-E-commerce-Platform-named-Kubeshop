@@ -1,0 +1,26 @@
+{
+  "title": "KubeShop Application Dashboard",
+  "panels": [
+    {
+      "title": "Frontend Response Time",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "http_request_duration_seconds_sum{job='frontend'} / http_request_duration_seconds_count{job='frontend'}",
+          "legendFormat": "Avg Response Time"
+        }
+      ]
+    },
+    {
+      "title": "Cart Service Errors",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(http_requests_total{job='cart', status=~'5..'}[5m])",
+          "legendFormat": "5xx Errors"
+        }
+      ]
+    }
+  ]
+}
+
