@@ -1,5 +1,12 @@
-FROM openjdk:11-jdk-slim
-VOLUME /tmp
-COPY target/product-service-1.0.0.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY app.py .
+
+RUN pip install flask
+
+EXPOSE 8080
+
+CMD ["python", "app.py"]
 
