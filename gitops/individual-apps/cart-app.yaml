@@ -10,12 +10,10 @@ spec:
   project: default
   source:
     repoURL: https://github.com/akhil27051999/Cloud-native-E-commerce-Platform-named-kubeshop.git
-    targetRevision: HEAD
+    targetRevision: main
     path: k8s-manifests/overlays/dev
     kustomize:
       namePrefix: cart-
-      patches:
-        - path: patches/cart-replica-patch.yaml
   syncPolicy:
     automated:
       prune: true
