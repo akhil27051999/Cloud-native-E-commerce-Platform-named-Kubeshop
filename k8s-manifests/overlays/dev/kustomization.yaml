@@ -24,3 +24,6 @@ images:
 - name: akhilthyadi/kube-frontend
   newName: akhilthyadi/kube-frontend
   newTag: v3
+- name: akhilthyadi/kube-payments
+  newName: akhilthyadi/kube-payments
+  newTag: v1
