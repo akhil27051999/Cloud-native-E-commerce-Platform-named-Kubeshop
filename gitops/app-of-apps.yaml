@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/akhil27051999/Cloud-native-E-commerce-Platform-named-kubeshop.git
     targetRevision: main
-    path: gitops/argo-cd-apps/individual-apps
+    path: gitops/individual-apps
     directory:
       recurse: true
   syncPolicy:
