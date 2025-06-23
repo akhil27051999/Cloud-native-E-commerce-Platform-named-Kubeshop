@@ -27,3 +27,6 @@ images:
 - name: akhilthyadi/kube-payments
   newName: akhilthyadi/kube-payments
   newTag: v1
+- name: akhilthyadi/kube-product
+  newName: akhilthyadi/kube-product
+  newTag: v1
