@@ -6,6 +6,50 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
+    - host: auth.local
+      http:
+        paths:
+          - path: /auth
+            pathType: Prefix
+            backend:
+              service:
+                name: auth
+                port:
+                  number: 80
+
+    - host: cart.local
+      http:
+        paths:
+          - path: /cart
+            pathType: Prefix
+            backend:
+              service:
+                name: cart
+                port:
+                  number: 80
+
+    - host: payments.local
+      http:
+        paths:
+          - path: /payments
+            pathType: Prefix
+            backend:
+              service:
+                name: payments
+                port:
+                  number: 80
+
+    - host: product.local
+      http:
+        paths:
+          - path: /product
+            pathType: Prefix
+            backend:
+              service:
+                name: product
+                port:
+                  number: 80
+
     - host: frontend.local
       http:
         paths:
