@@ -21,3 +21,6 @@ images:
 - name: akhilthyadi/kube-cart
   newName: akhilthyadi/kube-cart
   newTag: v2
+- name: akhilthyadi/kube-frontend
+  newName: akhilthyadi/kube-frontend
+  newTag: v3
