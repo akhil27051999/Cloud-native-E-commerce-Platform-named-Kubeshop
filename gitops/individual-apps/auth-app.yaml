@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: auth-app
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
   destination:
     namespace: auth
