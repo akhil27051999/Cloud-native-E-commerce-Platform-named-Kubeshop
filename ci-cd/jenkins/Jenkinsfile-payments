@@ -3,21 +3,24 @@ pipeline {
   environment {
     IMAGE_NAME = "akhilthyadi/kube-payments"
     IMAGE_TAG = "v${env.BUILD_NUMBER}"
-    KUSTOMIZE_DIR = "k8s-manifests/base/payments"
+    KUSTOMIZE_DIR = "k8s-manifests/overlays/dev"
     CREDENTIALS_ID = 'dockerhub-creds'
     GIT_CREDENTIALS_ID = 'github-creds'
   }
   stages {
     stage('Checkout') {
       steps {
-        git url: 'https://github.com/akhil27051999/Cloud-native-E-commerce-Platform-named-kubeshop.git'
+        git branch: 'main', 
+            url: 'https://github.com/akhil27051999/Cloud-native-E-commerce-Platform-named-kubeshop.git'
       }
     }
+
     stage('Build Image') {
       steps {
         sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ./microservices/payments"
       }
     }
+
     stage('Push Image') {
       steps {
         withCredentials([usernamePassword(credentialsId: "${CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
@@ -28,17 +31,20 @@ pipeline {
         }
       }
     }
+
     stage('Update Kustomize') {
       steps {
         dir("${KUSTOMIZE_DIR}") {
-          sh "kustomize edit set image ${IMAGE_NAME}=${IMAGE_NAME}:${IMAGE_TAG} --load-restrictor=LoadRestrictionsNone"
+          sh "kustomize edit set image ${IMAGE_NAME}=${IMAGE_NAME}:${IMAGE_TAG}"
         }
+
         sh '''
           git config user.email 'jenkins@example.com'
           git config user.name 'jenkins'
           git add ${KUSTOMIZE_DIR}/kustomization.yaml
           git commit -m "Update payments image to ${IMAGE_TAG}" || echo "No changes"
         '''
+
         withCredentials([usernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}", usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
           sh '''
             git remote set-url origin https://${GIT_USER}:${GIT_PASS}@github.com/akhil27051999/Cloud-native-E-commerce-Platform-named-kubeshop.git
@@ -49,4 +55,3 @@ pipeline {
     }
   }
 }
-
