@@ -3,5 +3,5 @@ kind: Deployment
 metadata:
   name: payments
 spec:
-  replicas: 1
+  replicas: 2
 
