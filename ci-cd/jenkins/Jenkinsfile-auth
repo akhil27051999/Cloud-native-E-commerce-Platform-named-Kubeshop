@@ -10,7 +10,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git branch: 'main', // ✅ explicitly checkout 'main' instead of default 'master'
+        git branch: 'main', 
             url: 'https://github.com/akhil27051999/Cloud-native-E-commerce-Platform-named-kubeshop.git'
       }
     }
