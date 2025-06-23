@@ -35,7 +35,8 @@ pipeline {
     stage('Update Kustomize') {
       steps {
         dir("${KUSTOMIZE_DIR}") {
-          sh "kustomize edit set image ${IMAGE_NAME}=${IMAGE_NAME}:${IMAGE_TAG} --load-restrictor=LoadRestrictionsNone"
+          sh "kustomize edit set image ${IMAGE_NAME}=${IMAGE_NAME}:${IMAGE_TAG}"
+
         }
 
         sh '''
