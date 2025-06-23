@@ -3,7 +3,7 @@ pipeline {
   environment {
     IMAGE_NAME = "akhilthyadi/kube-auth"
     IMAGE_TAG = "v${env.BUILD_NUMBER}"
-    KUSTOMIZE_DIR = "k8s-manifests/overlays/dev/auth"
+    KUSTOMIZE_DIR = "k8s-manifests/overlays/dev"
     CREDENTIALS_ID = 'dockerhub-creds'
     GIT_CREDENTIALS_ID = 'github-creds'
   }
