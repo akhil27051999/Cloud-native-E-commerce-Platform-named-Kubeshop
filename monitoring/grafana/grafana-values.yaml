@@ -19,6 +19,8 @@ dashboardProviders:
         orgId: 1
         folder: ''
         type: file
+        disableDeletion: false
+        editable: true
         options:
           path: /var/lib/grafana/dashboards
 
@@ -30,4 +32,13 @@ dashboards:
       file: /var/lib/grafana/dashboards/pod-dashboard.json
     custom-kube-shop-dashboard:
       file: /var/lib/grafana/dashboards/custom-kube-shop-dashboard.json
+
+extraVolumeMounts:
+  - name: dashboards
+    mountPath: /var/lib/grafana/dashboards
+
+extraVolumes:
+  - name: dashboards
+    configMap:
+      name: grafana-dashboards
 
