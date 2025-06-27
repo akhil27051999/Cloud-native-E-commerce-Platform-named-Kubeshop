@@ -55,24 +55,27 @@ spec:
     spec:
       containers:
         - name: cart
-          image: cart-service:latest
+          image: akhilthyadi/kube-cart:latest
           ports:
-            - containerPort: 3000
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: cart-config
+            - secretRef:
+                name: cart-secret
+
 ```
 
 ```yaml
 # cart/service.yaml
 apiVersion: v1
-kind: Service
+kind: Secret
 metadata:
-  name: cart-service
-spec:
-  type: ClusterIP
-  selector:
-    app: cart
-  ports:
-    - port: 3000
-      targetPort: 3000
+  name: cart-secret
+type: Opaque
+data:
+  DB_PASSWORD: cmVkaXNfcGFzcw==
+
 ```
 
 ### 🔁 Multi-Environment Support with Kustomize
@@ -83,10 +86,23 @@ To handle separate environments (dev, staging, prod), we use Kustomize overlays.
 
 ```yaml
 # overlays/dev/kustomization.yaml
-resources:
-  - ../../base/cart
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+
 patchesStrategicMerge:
-  - patches/cart-replica-patch.yaml
+- patches/auth-replica-patch.yaml
+- patches/cart-replica-patch.yaml
+- patches/frontend-replica-patch.yaml
+- patches/payments-replica-patch.yaml
+- patches/product-replica-patch.yaml
+resources:
+- ../../base/auth
+- ../../base/cart
+- ../../base/frontend
+- ../../base/payments
+- ../../base/product
+
 ```
 
 ```yaml
@@ -96,7 +112,8 @@ kind: Deployment
 metadata:
   name: cart
 spec:
-  replicas: 1
+  replicas: 2
+
 ```
 
 🎯 Purpose: Kustomize overlays let you define environment-specific changes without modifying the base manifests.
@@ -146,7 +163,8 @@ spec:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 50
+          averageUtilization: 60
+
 ```
 
 ### ✅ Result
