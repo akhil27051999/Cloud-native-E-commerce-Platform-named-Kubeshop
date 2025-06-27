@@ -144,6 +144,5 @@ kube-shop/
 | **Fully Monitored**    | Dashboards, Alerts, Logs                           |
 | **Infra-as-Code**      | Complete Terraform setup for AWS EKS cluster       |
 
-## Outputs
 
 
