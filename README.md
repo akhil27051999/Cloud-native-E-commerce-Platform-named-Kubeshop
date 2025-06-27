@@ -15,7 +15,7 @@ A full-featured e-commerce application built with microservices using **Node.js*
 * Monitoring with Prometheus, Grafana, and Alertmanager
 
 
-### ὒ7 Pre-Requisites
+### Pre-Requisites
 
 * Docker
 * Kubectl
