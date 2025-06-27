@@ -31,8 +31,6 @@ CMD ["node", "index.js"]
 
 ✅ **Result**: Runs a minimal, production-ready Node.js app using Alpine base image.
 
----
-
 ## 🛒 2. Cart Microservice (Node.js)
 
 **Purpose**: Enables cart operations such as adding, removing, and updating products in a customer's cart.
@@ -58,7 +56,6 @@ CMD ["node", "index.js"]
 
 ✅ **Result**: A fast and lightweight microservice ideal for short-lived request-response operations.
 
----
 
 ## 🔐 3. Auth Microservice (Python - Flask)
 
@@ -87,8 +84,6 @@ CMD ["python", "app.py"]
 
 ✅ **Result**: A secure authentication service with token-based login support.
 
----
-
 ## 💳 4. Payments Microservice (Go)
 
 **Purpose**: Simulates payment operations for order checkout flow.
@@ -116,9 +111,8 @@ CMD ["/main"]
 
 ✅ **Result**: A production-optimized image (\~15MB) with no Go runtime required.
 
----
 
-### 🛍️ 5. Product Microservice (Java - Spring Boot)
+## 🛍️ 5. Product Microservice (Java - Spring Boot)
 
 *Purpose**: Offers CRUD APIs for managing product catalog and categories.
 
