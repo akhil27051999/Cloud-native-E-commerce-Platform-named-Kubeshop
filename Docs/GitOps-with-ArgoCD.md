@@ -32,20 +32,25 @@ gitops/
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kube-shop-parent
+  name: kube-shop-app-of-apps
+  namespace: argocd
 spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: https://github.com/org/repo
-    targetRevision: HEAD
-    path: gitops/applications
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: default
+    repoURL: https://github.com/akhil27051999/Cloud-native-E-commerce-Platform-named-kubeshop.git
+    targetRevision: main
+    path: gitops/individual-apps
+    directory:
+      recurse: true
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
 ```
 
 🎯 This pattern helps manage multiple ArgoCD applications from a single parent manifest.
@@ -53,24 +58,30 @@ spec:
 ### 🔗 Application Example
 
 ```yaml
-# gitops/applications/cart-app.yaml
+# gitops/individual-apps/cart-app.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cart
+  name: cart-app
+  namespace: argocd
 spec:
+  destination:
+    namespace: cart
+    server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: https://github.com/org/repo
-    targetRevision: HEAD
+    repoURL: https://github.com/akhil27051999/Cloud-native-E-commerce-Platform-named-kubeshop.git
+    targetRevision: main
     path: k8s-manifests/overlays/dev
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: default
+    kustomize:
+      namePrefix: cart-
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
 ```
 
 ### ✅ Benefits of Using ArgoCD
