@@ -1,27 +1,6 @@
-## 📘 Kube-Shop: A Complete Cloud-Native E-commerce DevOps Project
-
-This project is a **microservices-based e-commerce platform** containerized with Docker, orchestrated via Kubernetes, and deployed through CI/CD pipelines using GitHub Actions and Jenkins. It follows GitOps principles using ArgoCD and includes Helm chart management and Kustomize-based environment overlays.
-
----
-
-## 📁 Project Structure Overview
-
-```
-kube-shop/
-├── microservices/          # Source code for each microservice
-├── k8s-manifests/          # K8s base + overlays (Kustomize)
-├── helm-charts/            # Helm charts per service
-├── gitops/                 # ArgoCD GitOps deployment
-├── ci-cd/                  # GitHub Actions + Jenkins pipelines
-```
-
----
-
-## 🔧 Section 1: Microservices & Docker Containerization
+# 🔧 Section 1: Microservices & Docker Containerization
 
 This section covers all five microservices used in the `kube-shop` e-commerce platform. Each service is independently developed and containerized using Docker, following best practices for isolation, scalability, and portability.
-
----
 
 ### 🌐 1. Frontend Microservice (Node.js)
 
@@ -208,7 +187,3 @@ docker run -p 3000:3000 cart-service
 ```
 
 Repeat this for each microservice using their respective ports and Dockerfiles.
-
-✅ **Outcome**: All microservices are containerized, stateless, scalable, and can be deployed on any Kubernetes or Docker-compatible orchestration platform.
-
----
