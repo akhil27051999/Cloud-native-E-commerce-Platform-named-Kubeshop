@@ -77,11 +77,16 @@ kube-shop/
 * Multi-language microservices (Node.js, Python, Go) share a consistent build structure.
 * Docker Compose used locally for development and testing before Kubernetes deployment.
 
+![Screenshot 2025-06-16 115725](https://github.com/user-attachments/assets/2e178528-d58f-47f5-9ab4-d11ae9e50467)
+
 ### ✅ Section 2: Kubernetes Deployment (YAML-based)
 
 * Used Kubernetes manifests with `base-overlay` structure for multi-environment support (dev/staging/prod).
 * Defined Deployment, Service, ConfigMap, Secret, Ingress, and HPA YAMLs for each service.
 * Kustomize overlays allow environment-specific changes like replica count, secrets, and resources.
+
+![Screenshot 2025-06-21 003009](https://github.com/user-attachments/assets/82ef680a-7ac5-427f-83af-d5d11aa5aad6)
+
 
 ### ✅ Section 3: GitOps Workflow with ArgoCD
 
@@ -89,6 +94,9 @@ kube-shop/
 * Deployed as a Kubernetes service with its own namespace.
 * Used App of Apps pattern for managing multiple microservices via a parent ArgoCD Application.
 * Supports automated syncing, rollback, and health checks.
+
+![Screenshot 2025-06-23 232810](https://github.com/user-attachments/assets/5f8fdf14-fdb6-4e2b-a32d-e36ddb7f0f7e)
+
 
 ### ✅ Section 4: CI/CD Pipelines with GitHub Actions & Jenkins
 
@@ -99,6 +107,8 @@ kube-shop/
 * Jenkins pipelines used for production-level multistage deployment jobs.
 * Dockerized Jenkins with shared volumes and AWS credentials.
 * CI triggers automated CD via `kubectl apply` and ArgoCD webhook.
+
+![Screenshot 2025-06-23 204330](https://github.com/user-attachments/assets/581aa40c-c985-479d-a57d-7d9960a4c5b2)
 
 ### ✅ Section 5: Production-Grade Infrastructure using Terraform
 
@@ -115,6 +125,9 @@ kube-shop/
 * Dashboards display HPA scaling activity, latency, memory pressure, etc.
 * Port forwarding or Ingress used to access Grafana on port `3000`.
 
+![Screenshot 2025-06-25 213625](https://github.com/user-attachments/assets/269cee59-9761-4647-a37e-99c1d4c9fcfe)
+
+
 ---
 
 ## 🌟 Highlights
@@ -127,3 +140,7 @@ kube-shop/
 | **GitOps Ready**       | ArgoCD App of Apps + Declarative YAML              |
 | **Fully Monitored**    | Dashboards, Alerts, Logs                           |
 | **Infra-as-Code**      | Complete Terraform setup for AWS EKS cluster       |
+
+## Outputs
+
+
