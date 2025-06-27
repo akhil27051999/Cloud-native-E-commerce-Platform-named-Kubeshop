@@ -2,7 +2,7 @@
 
 This section covers all five microservices used in the `kube-shop` e-commerce platform. Each service is independently developed and containerized using Docker, following best practices for isolation, scalability, and portability.
 
-### 🌐 1. Frontend Microservice (Node.js)
+## 🌐 1. Frontend Microservice (Node.js)
 
 **Purpose**: Provides the user interface for customers to browse products, view cart, login, and checkout.
 
@@ -33,7 +33,7 @@ CMD ["node", "index.js"]
 
 ---
 
-### 🛒 2. Cart Microservice (Node.js)
+## 🛒 2. Cart Microservice (Node.js)
 
 **Purpose**: Enables cart operations such as adding, removing, and updating products in a customer's cart.
 
@@ -60,7 +60,7 @@ CMD ["node", "index.js"]
 
 ---
 
-### 🔐 3. Auth Microservice (Python - Flask)
+## 🔐 3. Auth Microservice (Python - Flask)
 
 **Purpose**: Manages secure user authentication with JWT support.
 
@@ -89,7 +89,7 @@ CMD ["python", "app.py"]
 
 ---
 
-### 💳 4. Payments Microservice (Go)
+## 💳 4. Payments Microservice (Go)
 
 **Purpose**: Simulates payment operations for order checkout flow.
 
@@ -120,7 +120,7 @@ CMD ["/main"]
 
 ### 🛍️ 5. Product Microservice (Java - Spring Boot)
 
-**Purpose**: Offers CRUD APIs for managing product catalog and categories.
+*Purpose**: Offers CRUD APIs for managing product catalog and categories.
 
 **Why Spring Boot?**
 Spring Boot provides built-in REST support, scalability, and enterprise features like security and validation.
