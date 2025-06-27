@@ -118,6 +118,8 @@ kube-shop/
 * Outputs like cluster endpoint, VPC IDs, and node role ARN are exposed for integration.
 * Terraform benefits: idempotent infra, version-controlled, and reusable modules.
 
+![450432332-73263db7-295d-4165-9018-a68fa80a593d](https://github.com/user-attachments/assets/7c9d7d91-a0a0-4306-bf04-eadb09053b49)
+
 ### ✅ Section 6: Monitoring & Observability
 
 * Prometheus deployed to collect metrics from pods, nodes, and K8s API.
