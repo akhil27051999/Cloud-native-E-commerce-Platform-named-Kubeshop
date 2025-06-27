@@ -20,13 +20,13 @@ Node.js is ideal for handling asynchronous user interactions and API calls with 
 #### 🐳 Dockerfile
 
 ```Dockerfile
-FROM node:alpine
+FROM node:18-alpine
 WORKDIR /app
-COPY package*.json ./
+COPY package.json ./
 RUN npm install
-COPY . .
-EXPOSE 3000
+COPY index.js ./
 CMD ["node", "index.js"]
+
 ```
 
 ✅ **Result**: Runs a minimal, production-ready Node.js app using Alpine base image.
@@ -45,13 +45,13 @@ Node.js handles concurrent requests efficiently and is well-suited for stateless
 Same as frontend for simplicity:
 
 ```Dockerfile
-FROM node:alpine
+FROM node:18-alpine
 WORKDIR /app
-COPY package*.json ./
+COPY package.json ./
 RUN npm install
-COPY . .
-EXPOSE 3000
+COPY index.js ./
 CMD ["node", "index.js"]
+
 ```
 
 ✅ **Result**: A fast and lightweight microservice ideal for short-lived request-response operations.
@@ -73,13 +73,13 @@ Flask is lightweight, flexible, and efficient for developing secure REST APIs qu
 #### 🐳 Dockerfile
 
 ```Dockerfile
-FROM python:3.9-slim
+FROM python:3.10-slim
 WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-EXPOSE 5000
+COPY app.py .
+RUN pip install flask
+EXPOSE 8080
 CMD ["python", "app.py"]
+
 ```
 
 ✅ **Result**: A secure authentication service with token-based login support.
@@ -99,20 +99,21 @@ Go (Golang) offers concurrency, fast execution, and is ideal for I/O bound micro
 #### 🐳 Multi-Stage Dockerfile
 
 ```Dockerfile
-FROM golang:1.20-alpine AS builder
-WORKDIR /app
-COPY . .
-RUN go build -o main
+FROM golang:1.20-alpine
 
-FROM alpine
-COPY --from=builder /app/main /main
-CMD ["/main"]
+WORKDIR /app
+COPY go.mod ./
+COPY main.go ./
+
+RUN go build -o payments main.go
+CMD ["./payments"]
+
 ```
 
 ✅ **Result**: A production-optimized image (\~15MB) with no Go runtime required.
 
 
-## 🛍️ 5. Product Microservice (Java - Spring Boot)
+## 🛍️ 5. Product Microservice (Python - Flask)
 
 *Purpose**: Offers CRUD APIs for managing product catalog and categories.
 
@@ -122,15 +123,13 @@ Spring Boot provides built-in REST support, scalability, and enterprise features
 #### 🐳 Dockerfile
 
 ```Dockerfile
-FROM maven:3.8-openjdk-17 AS build
+FROM python:3.10-slim
 WORKDIR /app
-COPY . .
-RUN mvn clean package -DskipTests
-
-FROM openjdk:17-alpine
-COPY --from=build /app/target/*.jar app.jar
+COPY app.py .
+RUN pip install flask
 EXPOSE 8080
-CMD ["java", "-jar", "app.jar"]
+CMD ["python", "app.py"]
+
 ```
 
 ✅ **Result**: A stable, production-grade microservice running as a standalone Spring Boot JAR.
