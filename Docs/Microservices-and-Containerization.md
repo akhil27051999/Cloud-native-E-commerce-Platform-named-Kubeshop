@@ -180,3 +180,11 @@ docker run -p 3000:3000 cart-service
 ```
 
 Repeat this for each microservice using their respective ports and Dockerfiles.
+
+## Outputs
+
+### Images Pushed to DockerHub
+![Screenshot 2025-06-16 115725](https://github.com/user-attachments/assets/0710d02b-8b01-4387-8718-a75926d184c9)
+
+### Frontend Testing using Port-forwarding
+![Screenshot 2025-06-17 011000](https://github.com/user-attachments/assets/bffb1fab-498f-4034-9e7c-149196a3d00d)
