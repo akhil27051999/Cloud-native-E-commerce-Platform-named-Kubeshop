@@ -73,4 +73,3 @@ output "eks_cluster_endpoint" {
 | Automation Ready   | Easily integrate with CI/CD pipelines.                   |
 | Safe & Idempotent  | Ensures repeatable, rollback-capable infra provisioning. |
 
----
