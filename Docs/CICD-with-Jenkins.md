@@ -152,7 +152,7 @@ pipeline {
 ### Status of Jenkins Pipeline for Each Microservice 
 ![Screenshot 2025-06-23 204330](https://github.com/user-attachments/assets/aaa68fa9-dedd-432c-9825-121590e517c8)
 
-### Pipeline successfully passed all stages
+### Pipeline Successfully Passed all Stages
 ![Screenshot 2025-06-23 201316](https://github.com/user-attachments/assets/dd66c97f-d5d7-44c6-8ba4-145ee8206788)
 
 ### Pipeline Successfully Updated the Kustomize with the Images
