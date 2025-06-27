@@ -71,26 +71,26 @@ kube-shop/
 
 ## 📊 Project Section-wise Overview
 
-✅ **Section 1: Microservices & Docker Containerization**
+### ✅ Section 1: Microservices & Docker Containerization
 
 * Each service (auth, cart, frontend, payments, product) containerized using Docker.
 * Multi-language microservices (Node.js, Python, Go) share a consistent build structure.
 * Docker Compose used locally for development and testing before Kubernetes deployment.
 
-✅ **Section 2: Kubernetes Deployment (YAML-based)**
+### ✅ Section 2: Kubernetes Deployment (YAML-based)
 
 * Used Kubernetes manifests with `base-overlay` structure for multi-environment support (dev/staging/prod).
 * Defined Deployment, Service, ConfigMap, Secret, Ingress, and HPA YAMLs for each service.
 * Kustomize overlays allow environment-specific changes like replica count, secrets, and resources.
 
-✅ **Section 3: GitOps Workflow with ArgoCD**
+### ✅ Section 3: GitOps Workflow with ArgoCD
 
 * ArgoCD syncs Kubernetes state from GitHub repository (`argocd-example-apps`).
 * Deployed as a Kubernetes service with its own namespace.
 * Used App of Apps pattern for managing multiple microservices via a parent ArgoCD Application.
 * Supports automated syncing, rollback, and health checks.
 
-✅ **Section 4: CI/CD Pipelines with GitHub Actions & Jenkins**
+### ✅ Section 4: CI/CD Pipelines with GitHub Actions & Jenkins
 
 * GitHub Actions used for:
 
@@ -100,14 +100,14 @@ kube-shop/
 * Dockerized Jenkins with shared volumes and AWS credentials.
 * CI triggers automated CD via `kubectl apply` and ArgoCD webhook.
 
-✅ **Section 5: Production-Grade Infrastructure using Terraform**
+### ✅ Section 5: Production-Grade Infrastructure using Terraform
 
 * Created full AWS setup using modular Terraform structure (`vpc`, `eks-cluster`, `node-group`).
 * EKS cluster bootstrapped with proper networking, IAM roles, and node groups.
 * Outputs like cluster endpoint, VPC IDs, and node role ARN are exposed for integration.
 * Terraform benefits: idempotent infra, version-controlled, and reusable modules.
 
-✅ **Section 6: Monitoring & Observability**
+### ✅ Section 6: Monitoring & Observability
 
 * Prometheus deployed to collect metrics from pods, nodes, and K8s API.
 * Grafana configured to visualize metrics via custom dashboards.
