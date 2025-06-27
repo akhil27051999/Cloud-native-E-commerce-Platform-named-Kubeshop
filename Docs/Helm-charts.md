@@ -21,10 +21,10 @@ Each chart follows this standard structure:
 | `values.yaml`    | Default configuration values (image, replicas, etc)    |
 | `templates/`     | Contains Kubernetes resource templates                 |
 
-### 📦 Sample Chart: `auth-chart`
+### 📦 Sample Chart: `cart-chart`
 
 ```
-auth-chart/
+cart-chart/
 ├── Chart.yaml
 ├── values.yaml
 └── templates/
@@ -39,19 +39,25 @@ auth-chart/
 
 ```yaml
 replicaCount: 2
+
 image:
-  repository: auth-service
-  tag: v1
+  repository: akhilthyadi/kube-cart
+  tag: latest
   pullPolicy: IfNotPresent
+
 service:
   type: ClusterIP
-  port: 5000
+  port: 5001
+
 ingress:
   enabled: true
-  path: /auth
-  host: kube-shop.local
-env:
-  JWT_SECRET: mysecret
+  path: /cart
+
+config:
+  CART_CACHE_TTL: "300"
+
+resources: {}
+
 ```
 
 ### 📄 deployment.yaml Template
@@ -60,37 +66,37 @@ env:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: cart
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
+      app: cart
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}
+        app: cart
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: cart
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          env:
-            - name: JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: auth-secret
-                  key: JWT_SECRET
           ports:
-            - containerPort: 5000
+            - containerPort: 5001
+          envFrom:
+            - configMapRef:
+                name: cart-config
+            - secretRef:
+                name: cart-secret
+
 ```
 
 ### 🚀 Helm Commands
 
 | Command                          | Purpose                         |
 | -------------------------------- | ------------------------------- |
-| `helm install auth ./auth-chart` | Deploy the chart to the cluster |
-| `helm upgrade auth ./auth-chart` | Upgrade release with changes    |
-| `helm uninstall auth`            | Remove the deployed release     |
+| `helm install cart ./cart-chart` | Deploy the chart to the cluster |
+| `helm upgrade cart ./cart-chart` | Upgrade release with changes    |
+| `helm uninstall cart`            | Remove the deployed release     |
 
 ✅ **Tip**: Use `helm lint` and `helm template` for validation and dry-runs.
 
