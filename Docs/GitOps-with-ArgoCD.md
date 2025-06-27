@@ -16,11 +16,12 @@ GitOps is a DevOps methodology where **Git is the single source of truth** for i
 
 ```
 gitops/
-├── applications/
+├── individual-apps/
 │   ├── cart-app.yaml
 │   ├── auth-app.yaml
-│   └── ...
-├── project.yaml        # ArgoCD project definition
+│   ├── frontend-app.yaml
+│   ├── payments-app.yaml
+│   └── product-app.yaml
 └── app-of-apps.yaml    # App of Apps pattern
 ```
 
