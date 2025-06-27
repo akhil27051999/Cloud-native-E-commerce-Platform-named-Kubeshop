@@ -1,6 +1,28 @@
-## 📘 Kube-Shop: A Complete Cloud-Native E-commerce DevOps Project
+# 📦 Kube-Shop: Cloud-Native E-commerce Platform
 
-This project is a **microservices-based e-commerce platform** containerized with Docker, orchestrated via Kubernetes, and deployed through CI/CD pipelines using GitHub Actions and Jenkins. It follows GitOps principles using ArgoCD and includes Helm chart management and Kustomize-based environment overlays.
+A full-featured e-commerce application built with microservices using **Node.js**, **Python**, **Go**, and **Java**, containerized with **Docker**, deployed on **Kubernetes**, managed with **GitOps (ArgoCD)**, automated with **CI/CD (GitHub Actions & Jenkins)**, monitored via **Prometheus & Grafana**, and provisioned with **Terraform on AWS**.
+
+---
+
+## 🌐 Live Features
+
+* Microservices architecture (Auth, Cart, Frontend, Payments, Product)
+* Kubernetes multi-environment setup with **Kustomize** overlays
+* Helm chart support for each microservice
+* CI/CD pipelines using GitHub Actions and Jenkins
+* ArgoCD App of Apps for GitOps deployment
+* AWS Infrastructure via Terraform (VPC, EKS, Node Groups)
+* Monitoring with Prometheus, Grafana, and Alertmanager
+
+
+### ὒ7 Pre-Requisites
+
+* Docker
+* Kubectl
+* Minikube/Kind (for local Kubernetes testing)
+* Terraform (v1.5+)
+* AWS CLI configured
+* ArgoCD & Helm installed
 
 ---
 
@@ -8,204 +30,100 @@ This project is a **microservices-based e-commerce platform** containerized with
 
 ```
 kube-shop/
-├── microservices/          # Source code for each microservice
-├── k8s-manifests/          # K8s base + overlays (Kustomize)
-├── helm-charts/            # Helm charts per service
-├── gitops/                 # ArgoCD GitOps deployment
-├── ci-cd/                  # GitHub Actions + Jenkins pipelines
+├── microservices/                # Source code for all 5 microservices
+│   ├── frontend/                 # Node.js
+│   ├── cart/                     # Node.js
+│   ├── auth/                     # Python Flask
+│   ├── payments/                 # Go
+│   └── product/                  # Java Spring Boot
+
+├── k8s-manifests/               # Kubernetes YAMLs with base/overlay structure
+│   ├── base/                    # Base manifests (deployment, service, ingress, etc.)
+│   └── overlays/                # Kustomize overlays for dev/staging/prod
+
+├── helm-charts/                 # Helm charts for each microservice
+│   ├── [service]-chart/         # Individual Helm charts for auth, cart, etc.
+
+├── gitops/                      # ArgoCD GitOps app configurations
+│   └── argo-cd-apps/
+│       ├── app-of-apps.yaml     # App of Apps definition
+│       └── individual-apps/     # Each microservice’s ArgoCD Application manifest
+
+├── ci-cd/                       # CI/CD workflows for GitHub Actions & Jenkins
+│   ├── github-actions/          # GitHub Actions YAMLs for all services
+│   └── jenkins/                 # Jenkinsfiles for all services
+
+├── monitoring/                  # Prometheus, Grafana, and Alertmanager configuration
+│   ├── prometheus/              # Prometheus config & exporters
+│   └── grafana/                 # Grafana dashboards and values
+
+├── terraform/                   # Infrastructure as Code (IaC) using Terraform
+│   ├── main.tf                  # Root configuration entrypoint
+│   ├── variables.tf             # Input variables for the deployment
+│   ├── outputs.tf               # Output values from the infra
+│   └── modules/                 # Reusable infra modules
+│       ├── vpc/                 # VPC & Subnets
+│       ├── eks-cluster/         # EKS control plane resources
+│       └── node-group/          # Worker node group configuration
 ```
 
 ---
 
-## 🔧 Microservices (Polyglot Stack & Docker Containerization)
+## 🧉 Project Section-wise Overview
 
-### 1. `frontend/` (Node.js)
+✅ **Section 1: Microservices & Docker Containerization**
 
-* **Function**: Provides the user interface for the e-commerce platform.
-* **Why Node.js**: Fast, event-driven architecture suitable for responsive UIs.
-* **Files**: `index.js`, `package.json`, `Dockerfile`
-* **Containerization**:
+* Each service (auth, cart, frontend, payments, product) containerized using Docker.
+* Multi-language microservices (Node.js, Python, Go) share a consistent build structure.
+* Docker Compose used locally for development and testing before Kubernetes deployment.
 
-  * Uses `node:alpine` as base image
-  * Installs dependencies with `npm install`
-  * Starts server with `node index.js`
+✅ **Section 2: Kubernetes Deployment (YAML-based)**
 
-### 2. `cart/` (Node.js)
+* Used Kubernetes manifests with `base-overlay` structure for multi-environment support (dev/staging/prod).
+* Defined Deployment, Service, ConfigMap, Secret, Ingress, and HPA YAMLs for each service.
+* Kustomize overlays allow environment-specific changes like replica count, secrets, and resources.
 
-* **Function**: Handles cart operations (add, remove, view items).
-* **Why**: Code reuse with frontend and efficient async I/O handling
-* **Containerization**:
+✅ **Section 3: GitOps Workflow with ArgoCD**
 
-  * Similar to frontend, shares Dockerfile structure and runtime
+* ArgoCD syncs Kubernetes state from GitHub repository (`argocd-example-apps`).
+* Deployed as a Kubernetes service with its own namespace.
+* Used App of Apps pattern for managing multiple microservices via a parent ArgoCD Application.
+* Supports automated syncing, rollback, and health checks.
 
-### 3. `auth/` (Python - Flask)
+✅ **Section 4: CI/CD Pipelines with GitHub Actions & Jenkins**
 
-* **Function**: User authentication, registration, and JWT management
-* **Why Python**: Fast prototyping, rich auth libraries
-* **Containerization**:
+* GitHub Actions used for:
 
-  * Uses `python:3.9-slim`
-  * Installs via `requirements.txt`
-  * Runs via `python app.py` or `gunicorn`
+  * Linting, Unit Testing, Docker Image Builds, Pushing to Docker Hub
+  * Kustomize validation for overlays
+* Jenkins pipelines used for production-level multistage deployment jobs.
+* Dockerized Jenkins with shared volumes and AWS credentials.
+* CI triggers automated CD via `kubectl apply` and ArgoCD webhook.
 
-### 4. `payments/` (Go)
+✅ **Section 5: Production-Grade Infrastructure using Terraform**
 
-* **Function**: Processes payments and transaction validations
-* **Why Go**: Excellent performance, compiled binaries
-* **Containerization**:
+* Created full AWS setup using modular Terraform structure (`vpc`, `eks-cluster`, `node-group`).
+* EKS cluster bootstrapped with proper networking, IAM roles, and node groups.
+* Outputs like cluster endpoint, VPC IDs, and node role ARN are exposed for integration.
+* Terraform benefits: idempotent infra, version-controlled, and reusable modules.
 
-  * Multi-stage Dockerfile: `go build` → alpine/scratch base
-  * Minimal final image size
+✅ **Section 6: Monitoring & Observability**
 
-### 5. `product/` (Java Spring Boot)
-
-* **Function**: Handles product listings, categories, and inventory
-* **Why Spring Boot**: Robust framework with enterprise support
-* **Containerization**:
-
-  * Uses Maven to build JAR
-  * Runs with `java -jar ProductApplication.jar`
+* Prometheus deployed to collect metrics from pods, nodes, and K8s API.
+* Grafana configured to visualize metrics via custom dashboards.
+* Prebuilt dashboards imported for: Node CPU/memory, Pod health, EKS workload metrics.
+* Dashboards display HPA scaling activity, latency, memory pressure, etc.
+* Port forwarding or Ingress used to access Grafana on port `3000`.
 
 ---
 
-## ☸️ Kubernetes Configuration (Kustomize)
+## 🌟 Highlights
 
-### `k8s-manifests/base/`
-
-* **deployment.yaml**: Defines pod specs (image, env, probes)
-* **service.yaml**: ClusterIP service for internal communication
-* **configmap.yaml**: Non-sensitive configs like API endpoints
-* **secret.yaml**: Encoded secrets (JWT, passwords)
-* **ingress.yaml**: Ingress routing via NGINX
-* **hpa.yaml**: Horizontal Pod Autoscaler for CPU-based scaling
-
-### `k8s-manifests/overlays/`
-
-* **dev/**: Few replicas, used for development
-* **staging/**: Mimics production, for testing
-* **prod/**: High availability, maximum resources
-
----
-
-## 📦 Helm Charts (Reusable Packaging)
-
-Each service has a Helm chart:
-
-* **Chart.yaml**: Metadata
-* **values.yaml**: Configuration inputs (replicas, image tag)
-* **templates/**: Deployment, service, ingress, secrets, configmaps
-
-**Why Helm**: Easy to upgrade, version, and reuse charts across environments
-
----
-
-## 🚀 GitOps with ArgoCD
-
-### GitOps Directory: `gitops/argo-cd-apps/`
-
-* **app-of-apps.yaml**: Root app that manages all sub-apps
-* **individual-apps/**: One YAML per microservice ArgoCD App
-
-**Benefits**:
-
-* Declarative source of truth in Git
-* Auto-sync + rollback capabilities
-* Easy multi-env management
-
----
-
-## 🔄 CI/CD Pipelines
-
-### GitHub Actions (`ci-cd/github-actions/`)
-
-* Triggers on push to main branch
-* Steps:
-
-  * Checkout
-  * Docker Build
-  * Docker Push
-  * ArgoCD Sync or K8s Deploy
-
-### Jenkins Pipelines (`ci-cd/jenkins/`)
-
-* Uses `Jenkinsfile-*` per service
-* Custom stages for:
-
-  * Build
-  * Push
-  * Helm/K8s Deploy
-
-**Why Both**: Flexibility — GitHub Actions for lightweight automation, Jenkins for enterprise workflows
-
----
-
-## 🌐 Ingress + HPA + Secrets
-
-* **Ingress**: NGINX Ingress controller handles external access
-* **Secrets**: Secure password/token handling (base64 encoded)
-* **HPA**: Auto-scales services during load peaks
-
----
-
-## 📊 Monitoring (Optional Add-ons)
-
-* **Prometheus + Grafana**: Metric scraping and dashboards
-* **Loki + Fluentd + Kibana**: Central log aggregation
-* **Istio + Kiali**: Optional service mesh for observability
-
----
-
-## 🧪 Testing & Validation
-
-* **Service Unit Tests**: Each microservice supports tests (not shown here)
-* **CI Validation**: Linting (YAML, Docker, Helm)
-* **ArgoCD**: Verifies sync health after every deployment
-
----
-
-## 📖 Deployment Guide
-
-### 1. Clone Repo
-
-```bash
-git clone https://github.com/your-org/kube-shop.git
-cd kube-shop
-```
-
-### 2. Build & Push Docker Images
-
-```bash
-docker build -t your-dockerhub/frontend microservices/frontend
-# Repeat for other services
-docker push your-dockerhub/frontend
-```
-
-### 3. Apply ArgoCD App
-
-```bash
-kubectl apply -f gitops/argo-cd-apps/app-of-apps.yaml
-```
-
-### 4. CI/CD Trigger
-
-* GitHub: Push → Workflow executes
-* Jenkins: Trigger manually or schedule jobs
-
----
-
-## 📁 Project Summary
-
-* ✔️ 5 microservices in Node.js, Python, Go, Java
-* ✔️ Dockerized and stored in DockerHub
-* ✔️ Kubernetes manifests managed by Kustomize
-* ✔️ Helm charts for reuse and lifecycle mgmt
-* ✔️ GitOps with ArgoCD
-* ✔️ GitHub Actions + Jenkins Pipelines
-* ✔️ Ready for Prometheus, Grafana, Loki, Istio integrations
-
----
-
-## 👨‍💻 Author
-
-**Your Name**
-DevOps Engineer | Cloud-Native Enthusiast
+| Feature                | Description                                        |
+| ---------------------- | -------------------------------------------------- |
+| **Language Diversity** | Node.js, Python, Go, Java used across services     |
+| **Kubernetes-Native**  | Kustomize, Helm, Ingress, HPA, ConfigMaps, Secrets |
+| **CI/CD Pipelines**    | GitHub Actions + Jenkins in action                 |
+| **GitOps Ready**       | ArgoCD App of Apps + Declarative YAML              |
+| **Fully Monitored**    | Dashboards, Alerts, Logs                           |
+| **Infra-as-Code**      | Complete Terraform setup for AWS EKS cluster       |
