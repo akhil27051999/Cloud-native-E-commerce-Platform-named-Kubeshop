@@ -2,7 +2,7 @@
 
 This section details how CI/CD pipelines were implemented using GitHub Actions and Jenkins.
 
-### ⚙️ GitHub Actions
+### ⚙️ GitHub Actions (Optional Alternative)
 
 Each microservice contains its own `.github/workflows/ci-cd.yaml` file that performs:
 
@@ -34,29 +34,74 @@ jobs:
         run: curl -X POST $ARGOCD_TRIGGER_WEBHOOK_URL
 ```
 
-### 🔨 Jenkins Pipelines (Optional Alternative)
+### 🔨 Jenkins Pipelines 
 
 For teams preferring Jenkins, a `Jenkinsfile` can define similar steps:
 
 ```groovy
 pipeline {
   agent any
+
+  environment {
+    IMAGE_NAME = "akhilthyadi/kube-cart"
+    IMAGE_TAG = "v${env.BUILD_NUMBER}"
+    KUSTOMIZE_DIR = "k8s-manifests/overlays/dev"
+    CREDENTIALS_ID = 'dockerhub-creds'
+    GIT_CREDENTIALS_ID = 'github-creds'
+  }
+
   stages {
-    stage('Build') {
+    stage('Checkout') {
       steps {
-        sh 'docker build -t myapp:${BUILD_ID} .'
+        git branch: 'main',
+            url: 'https://github.com/akhil27051999/Cloud-native-E-commerce-Platform-named-kubeshop.git'
       }
     }
-    stage('Push') {
+
+    stage('Build Image') {
       steps {
-        withCredentials([usernamePassword(...)]) {
-          sh 'docker push myapp:${BUILD_ID}'
+        sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ./microservices/cart"
+      }
+    }
+
+    stage('Push Image') {
+      steps {
+        withCredentials([usernamePassword(
+          credentialsId: "${CREDENTIALS_ID}",
+          usernameVariable: 'DOCKER_USER',
+          passwordVariable: 'DOCKER_PASS'
+        )]) {
+          sh '''
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push ${IMAGE_NAME}:${IMAGE_TAG}
+          '''
         }
       }
     }
-    stage('Deploy') {
+
+    stage('Update Kustomize') {
       steps {
-        sh 'kubectl apply -k k8s-manifests/overlays/dev/'
+        dir("${KUSTOMIZE_DIR}") {
+          sh "kustomize edit set image ${IMAGE_NAME}=${IMAGE_NAME}:${IMAGE_TAG}"
+        }
+
+        sh '''
+          git config user.email 'jenkins@example.com'
+          git config user.name 'jenkins'
+          git add ${KUSTOMIZE_DIR}/kustomization.yaml
+          git commit -m "Update cart image to ${IMAGE_TAG}" || echo "No changes"
+        '''
+
+        withCredentials([usernamePassword(
+          credentialsId: "${GIT_CREDENTIALS_ID}",
+          usernameVariable: 'GIT_USER',
+          passwordVariable: 'GIT_PASS'
+        )]) {
+          sh '''
+            git remote set-url origin https://${GIT_USER}:${GIT_PASS}@github.com/akhil27051999/Cloud-native-E-commerce-Platform-named-kubeshop.git
+            git push origin main
+          '''
+        }
       }
     }
   }
