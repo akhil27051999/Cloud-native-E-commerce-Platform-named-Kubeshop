@@ -11,7 +11,7 @@ Each microservice contains its own `.github/workflows/ci-cd.yaml` file that perf
 * Deployment trigger via ArgoCD or `kubectl`
 
 ```yaml
-# Sample Cart GitHub Action Pipeline
+// Sample Cart GitHub Action Pipeline
 name: Deploy Cart Microservice
 
 on:
