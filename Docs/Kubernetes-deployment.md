@@ -200,4 +200,10 @@ curl http://cart.kubeshop.local
 | GitOps Ready         | Easily integrated with ArgoCD or Flux.             |
 | Environment Specific | Replica counts, secrets, and resource limits vary. |
 
+## Outputs
+
+### Pods Status of all Microservices
+
+![Screenshot 2025-06-21 003009](https://github.com/user-attachments/assets/6d45d09d-d544-451e-a3d7-14fb2583c777)
+
 
