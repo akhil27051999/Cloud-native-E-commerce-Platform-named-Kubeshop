@@ -114,4 +114,15 @@ helm install grafana grafana/grafana \
 * Regularly back up custom dashboards.
 * Secure access to Grafana with authentication plugins or OIDC.
 
+## Outputs
+
+### Prometheus Collecting Metrics from Cluster and Applications
+![Screenshot 2025-06-26 002050](https://github.com/user-attachments/assets/77168a96-e355-45e2-a25b-163c75cc8035)
+
+### Grafana uses Prometheus Metrics as Data source for Dashboards
+![Screenshot 2025-06-26 004920](https://github.com/user-attachments/assets/ddb8c67c-818b-4db0-b2d5-88be7c8be19e)
+
+
+### Grafana Dashboard for Node Exporter
+![Screenshot 2025-06-25 213625](https://github.com/user-attachments/assets/ca642b5d-70ba-4172-a06c-7f002a4ac81b)
 
