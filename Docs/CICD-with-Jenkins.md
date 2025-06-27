@@ -11,27 +11,54 @@ Each microservice contains its own `.github/workflows/ci-cd.yaml` file that perf
 * Deployment trigger via ArgoCD or `kubectl`
 
 ```yaml
-# Sample GitHub Actions Workflow
-name: CI/CD Pipeline
+name: Deploy Cart Microservice
+
 on:
   push:
-    branches: [ main ]
+    paths:
+      - 'microservices/cart/**'
+      - '.github/workflows/deploy-cart.yml'
 
 jobs:
-  build:
+  build-push-deploy:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: akhilthyadi/kube-cart
+      KUSTOMIZE_DIR: k8s-manifests/base/cart
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: docker build -t myapp:${{ github.sha }} .
+      - name: Set Image Tag
+        run: echo "IMAGE_TAG=v${{ github.run_number }}" >> $GITHUB_ENV
 
-      - name: Push to Docker Hub
-        run: docker push myapp:${{ github.sha }}
+      - name: Build Docker Image
+        run: docker build -t $IMAGE_NAME:$IMAGE_TAG ./microservices/cart
 
-      - name: Trigger ArgoCD Sync
-        run: curl -X POST $ARGOCD_TRIGGER_WEBHOOK_URL
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Push Docker Image
+        run: docker push $IMAGE_NAME:$IMAGE_TAG
+
+      - name: Install Kustomize
+        run: |
+          curl -s https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh | bash
+          sudo mv kustomize /usr/local/bin/
+
+      - name: Update Kustomization Image Tag
+        working-directory: ${{ env.KUSTOMIZE_DIR }}
+        run: kustomize edit set image $IMAGE_NAME=$IMAGE_NAME:$IMAGE_TAG
+
+      - name: Commit & Push Changes
+        run: |
+          git config user.email "github-actions@github.com"
+          git config user.name "GitHub Actions"
+          git add $KUSTOMIZE_DIR/kustomization.yaml
+          git commit -m "Update cart image to $IMAGE_TAG" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+
 ```
 
 ### 🔨 Jenkins Pipelines 
