@@ -94,3 +94,24 @@ spec:
 | Rollbacks         | Easily roll back to any previous commit/version              |
 | GitOps Workflow   | Matches modern CI/CD and platform engineering best practices |
 
+## Outputs
+
+### GitOps with Argo CD showing all Applications Sync and Health Status
+![Screenshot 2025-06-23 232810](https://github.com/user-attachments/assets/af9e4917-95ea-411c-843e-7068462b9e38)
+
+### GitOps with ArgoCD showing Sync and Health Status of App-of-Apps
+![Screenshot 2025-06-23 232335](https://github.com/user-attachments/assets/25ade2e2-5259-4282-9b43-e93a50b562bd)
+
+### GitOps with ArgoCD showing Sync and Health Status of Frontend Microservice
+![Screenshot 2025-06-23 232223](https://github.com/user-attachments/assets/da27193f-a1a7-421b-9f5d-6a1f093867ca)
+
+### GitOps with ArgoCD showing Sync and Health Status of Cart Microservice
+![Screenshot 2025-06-23 232244](https://github.com/user-attachments/assets/33ba1354-52ca-47a1-8b9c-deb6eae7b9b8)
+
+### GitOps with ArgoCD showing Sync and Health Status of Payments Microservice
+![Screenshot 2025-06-23 232419](https://github.com/user-attachments/assets/87e00437-0616-4af0-8fe2-17bbacab08b6)
+
+### GitOps with ArgoCD showing Sync and Health Status of Product Microservice
+![Screenshot 2025-06-23 232439](https://github.com/user-attachments/assets/8d044f08-c909-4fe3-94bb-26d4393cd7b7)
+
+
