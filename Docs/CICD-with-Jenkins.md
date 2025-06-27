@@ -145,3 +145,15 @@ pipeline {
 | Push         | Docker CLI       | Image pushed to Docker Hub or ECR |
 | Deploy       | ArgoCD / kubectl | Application synced with cluster   |
 | Notification | GitHub/Slack     | Pipeline result notified          |
+
+
+## ✅ Outputs 
+
+### Status of Jenkins Pipeline for Each Microservice 
+![Screenshot 2025-06-23 204330](https://github.com/user-attachments/assets/aaa68fa9-dedd-432c-9825-121590e517c8)
+
+### Pipeline successfully passed all stages
+![Screenshot 2025-06-23 201316](https://github.com/user-attachments/assets/dd66c97f-d5d7-44c6-8ba4-145ee8206788)
+
+### Pipeline Successfully Updated the Kustomize with the Images
+![Screenshot 2025-06-23 205229](https://github.com/user-attachments/assets/6b6113d5-a3f9-4a95-9ff7-826c4e780e79)
