@@ -69,7 +69,7 @@ kube-shop/
 
 ---
 
-## 🧉 Project Section-wise Overview
+## 📊 Project Section-wise Overview
 
 ✅ **Section 1: Microservices & Docker Containerization**
 
