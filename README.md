@@ -14,6 +14,7 @@ A full-featured e-commerce application built with microservices using **Node.js*
 * AWS Infrastructure via Terraform (VPC, EKS, Node Groups)
 * Monitoring with Prometheus, Grafana, and Alertmanager
 
+<img width="1000" alt="monolithic-architecture" src="https://github.com/user-attachments/assets/f3409bb8-d292-444e-a686-49f0c1dfeabb" />
 
 ### Pre-Requisites
 
