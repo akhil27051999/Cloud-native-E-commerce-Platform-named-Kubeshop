@@ -1,95 +1,117 @@
-# 📊 Section 7: Monitoring & Observability (Prometheus + Grafana)
+# 📊 Section - 7: Monitoring and Observability - Kube-Shop
 
-To ensure high availability and performance visibility, the cluster is integrated with **Prometheus** for metrics collection and **Grafana** for visualization. Monitoring enables alerting, diagnostics, and SRE-level observability for microservices in Kubernetes.
+This section outlines how monitoring and observability is implemented in the Kube-Shop project using **Prometheus**, **Alertmanager**, **Grafana**, and exporters like **Node Exporter** and **Kube State Metrics**. Dashboards and alerting configurations provide deep insights into application and cluster health.
 
-### 📁 Folder Structure
+---
+
+## 📁 Folder Structure
 
 ```
 monitoring/
-├── prometheus/
-│   ├── prometheus-deployment.yaml
-│   ├── prometheus-service.yaml
-│   └── prometheus-configmap.yaml
 ├── grafana/
-│   ├── grafana-deployment.yaml
-│   ├── grafana-service.yaml
 │   ├── dashboards/
-│   │   └── default.json
-│   └── datasource-config.yaml
+│   │   ├── custom-kube-shop-dashboard.json
+│   │   ├── node-dashboard.json
+│   │   └── pod-dashboard.json
+│   └── grafana-values.yaml
+├── prometheus/
+│   ├── exporters/
+│   │   ├── kube-state-metrics-values.yaml
+│   │   └── node-exporter-values.yaml
+│   ├── alertmanager-config.yaml
+│   ├── prometheus-config.yaml
+│   └── prometheus-values.yaml
 ```
 
-### 🔧 Prometheus Setup
+---
 
-| File                         | Purpose                                          |
-| ---------------------------- | ------------------------------------------------ |
-| `prometheus-deployment.yaml` | Deploys Prometheus server pod                    |
-| `prometheus-service.yaml`    | Exposes Prometheus via ClusterIP or NodePort     |
-| `prometheus-configmap.yaml`  | Defines scrape configs for Kubernetes components |
+## 📦 Prometheus Stack
 
-```yaml
-# prometheus-configmap.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: prometheus-config
-  labels:
-    name: prometheus-config
+We use the **kube-prometheus-stack** Helm chart which bundles the following:
 
-data:
-  prometheus.yml: |
-    global:
-      scrape_interval: 15s
-    scrape_configs:
-      - job_name: 'kubernetes-nodes'
-        kubernetes_sd_configs:
-          - role: node
-```
+* **Prometheus**: Collects metrics from Kubernetes objects and applications.
+* **Alertmanager**: Sends alert notifications based on rules.
+* **Node Exporter**: Provides host-level metrics.
+* **Kube State Metrics**: Reports on Kubernetes object states.
 
-### 📈 Grafana Setup
+### 🔧 Configuration Files
 
-| File                      | Purpose                                           |
-| ------------------------- | ------------------------------------------------- |
-| `grafana-deployment.yaml` | Deploys Grafana server with persistent dashboards |
-| `datasource-config.yaml`  | Connects Grafana to Prometheus as the data source |
-| `default.json`            | Sample dashboard for Kubernetes metrics           |
+* `prometheus-values.yaml`: Custom values for Helm installation.
+* `prometheus-config.yaml`: Prometheus scrape configurations.
+* `alertmanager-config.yaml`: Routing and receiver setup (email, Slack).
 
-```yaml
-# datasource-config.yaml
-apiVersion: 1
-datasources:
-  - name: Prometheus
-    type: prometheus
-    url: http://prometheus-service:9090
-    access: proxy
-    isDefault: true
-```
+### 📦 Exporters
 
-### 📊 Dashboards (Key Visuals)
+Located under `exporters/`, these files configure Helm chart values for:
 
-* Kubernetes Pod CPU & Memory usage
-* Node health and availability
-* Microservice response latency
-* EKS cluster performance
-* HPA trigger status and scale-up/down behavior
+* **Node Exporter** (`node-exporter-values.yaml`)
+* **Kube State Metrics** (`kube-state-metrics-values.yaml`)
 
-### ⚙️ How to Deploy Monitoring Stack
+### 🚀 Installation Commands
 
 ```bash
-# Apply Prometheus
-kubectl apply -f monitoring/prometheus/
-
-# Apply Grafana
-kubectl apply -f monitoring/grafana/
-
-# Port Forward Grafana for local access
-kubectl port-forward svc/grafana 3000:3000
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm install monitoring prometheus-community/kube-prometheus-stack \
+  -f prometheus/prometheus-values.yaml
 ```
 
-### ✅ Benefits
+---
 
-| Feature         | Value Provided                                                       |
-| --------------- | -------------------------------------------------------------------- |
-| Alerting        | Use Alertmanager with Prometheus for Slack/email notifications       |
-| Visualization   | Real-time dashboards using Grafana                                   |
-| Troubleshooting | Inspect pod-level and cluster-level metrics                          |
-| DevOps Insight  | Helps in tuning HPA, scaling behavior, and understanding bottlenecks |
+## 📈 Grafana
+
+Grafana is used for visualizing the metrics scraped by Prometheus.
+
+### 🗂 Dashboards
+
+Dashboards are located in `grafana/dashboards/` and are auto-loaded using `grafana-values.yaml`.
+
+* `node-dashboard.json`: Node resource metrics (CPU, memory, disk).
+* `pod-dashboard.json`: Pod-level metrics (restarts, CPU/mem usage).
+* `custom-kube-shop-dashboard.json`: Service-specific metrics for the Kube-Shop app.
+
+### ⚙️ Configuration
+
+* `grafana-values.yaml`: Preconfigures datasources and dashboard provisioning.
+
+### 🚀 Installation
+
+```bash
+helm repo add grafana https://grafana.github.io/helm-charts
+helm install grafana grafana/grafana \
+  -f grafana/grafana-values.yaml
+```
+
+---
+
+## 🛎️ Alerting
+
+* **Alertmanager** is integrated with the Prometheus stack.
+* Routing rules and contact points are managed in `alertmanager-config.yaml`
+* Alerts can be sent via:
+
+  * Email
+  * Slack
+  * Webhooks (e.g., OpsGenie, PagerDuty)
+
+---
+
+## ✅ Monitoring Outcomes
+
+| Tool               | Purpose                                |
+| ------------------ | -------------------------------------- |
+| Prometheus         | Collects metrics from cluster & apps   |
+| Alertmanager       | Sends alerts based on Prometheus rules |
+| Grafana            | Visualizes metrics and logs            |
+| Node Exporter      | Exposes host-level system metrics      |
+| Kube State Metrics | Provides Kubernetes object states      |
+
+---
+
+## 📌 Best Practices
+
+* Always provision monitoring stack **after** core Kubernetes components.
+* Use **persistent volumes** for Grafana and Prometheus where required.
+* Regularly back up custom dashboards.
+* Secure access to Grafana with authentication plugins or OIDC.
+
+
